@@ -14,9 +14,16 @@ TIMEOUT = 120
 # With a key, hand the agent Massive's own market data server, run locally over stdio.
 # Without one, use our market server, which serves simulated prices.
 if massive_api_key:
+    # mcp_massive still uses FastMCP; pin mcp<2 or uvx installs SDK 2 and the process dies.
     market_params = {
         "command": "uvx",
-        "args": ["--from", "git+https://github.com/massive-com/mcp_massive@v0.10.0", "mcp_massive"],
+        "args": [
+            "--from",
+            "git+https://github.com/massive-com/mcp_massive@v0.10.0",
+            "--with",
+            "mcp<2",
+            "mcp_massive",
+        ],
         "env": {"MASSIVE_API_KEY": massive_api_key},
     }
 else:
